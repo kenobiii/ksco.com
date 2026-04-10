@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A1525"/>
+      <stop offset="100%" stop-color="#03080F"/>
+    </linearGradient>
+  </defs>
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+  <!-- Pink accent border top -->
+  <rect x="0" y="0" width="32" height="2" rx="1" fill="#E8347A" opacity="0.8"/>
+  <!-- K letterform -->
+  <text x="16" y="23" font-family="Arial Black, Helvetica, sans-serif" font-size="20" font-weight="900" fill="#E8347A" text-anchor="middle">K</text>
+  <!-- Corner dots — HUD accent -->
+  <circle cx="4" cy="4" r="1.5" fill="#E8347A" opacity="0.5"/>
+  <circle cx="28" cy="4" r="1.5" fill="#E8347A" opacity="0.5"/>
+</svg>
