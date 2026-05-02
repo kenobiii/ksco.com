@@ -123,7 +123,7 @@ const CAREER = [
   { co:"OverActive Media", role:"Director — OAM Live", date:"2019–2021", note:"Toronto Ultra · Toronto Defiant · Raptors Uprising GC · Leafs Gaming" },
   { co:"MXP (Founded)", role:"Founder", date:"2014–2019", note:"Acquired by OverActive Media · Red Bull · Epic · Psyonix · MLSE · Bell" },
   { co:"ESL / Turtle Entertainment", role:"Operations Director, NA", date:"2014–2016", note:"Eight-figure revenue · 220 staff · IAB MIXX Gold Award" },
-  { co:"Genesis Gaming LLC", role:"Strategic Partner & Co-Founder", date:"2012–Present", note:"$7.65M economic impact · Oakland 2020 · Destinations Intl verified" },
+  { co:"Genesis Gaming LLC", role:"Strategic Consultant", date:"2012–Present", note:"$7.65M economic impact · Oakland 2020 · Destinations Intl verified" },
 ];
 
 // ── Hooks ─────────────────────────────────────────────────────────────────────
@@ -242,13 +242,14 @@ function PlayerProfileModal({ onClose }) {
               {[
                 ["CLASS", "Strategic Founder"],
                 ["FACTION", "Gaming & Esports"],
-                ["LOCATION", "Toronto, CA"],
+                ["NATION", "🍁 Canada"],
+                ["LOCATION", "Toronto, ON"],
                 ["LEVEL", "15+ YRS"],
                 ["STATUS", "ACTIVE"],
               ].map(([k,v]) => (
                 <div key={k} style={{ display:"flex", justifyContent:"space-between", gap:8, borderBottom:`1px solid ${C.rule}`, paddingBottom:6 }}>
                   <span style={{ fontFamily:"monospace", fontSize:"0.56rem", color:C.muted, letterSpacing:"0.12em" }}>{k}</span>
-                  <span style={{ fontFamily:"monospace", fontSize:"0.56rem", color: k==="STATUS" ? C.green : C.text, fontWeight:700, textAlign:"right" }}>{v}</span>
+                  <span style={{ fontFamily:"monospace", fontSize:"0.56rem", color: k==="STATUS" ? C.green : k==="NATION" ? C.accent : C.text, fontWeight:700, textAlign:"right" }}>{v}</span>
                 </div>
               ))}
             </div>
@@ -387,6 +388,92 @@ function MissionLogModal({ onClose }) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
+// ── Contact Form (Formspree) ──────────────────────────────────────────────────
+function ContactForm() {
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formspree.io/f/mzdozqyq", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setName(""); setEmail(""); setMessage("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputStyle = {
+    width:"100%", background:"rgba(10,21,37,0.8)",
+    border:`1px solid ${C.dim}`, borderRadius:3,
+    padding:"11px 14px", color:C.text,
+    fontFamily:"'DM Sans',sans-serif", fontSize:"0.88rem",
+    outline:"none", transition:"border-color 0.2s",
+  };
+
+  if (status === "success") return (
+    <div style={{ textAlign:"center", padding:"24px", background:C.greenDim, border:`1px solid rgba(0,255,136,0.25)`, borderRadius:6 }}>
+      <div style={{ fontFamily:"monospace", fontSize:"0.7rem", color:C.green, letterSpacing:"0.18em", marginBottom:8 }}>// TRANSMISSION RECEIVED</div>
+      <p style={{ color:C.text, fontSize:"0.9rem", fontWeight:300 }}>Message sent. Ken will be in touch soon.</p>
+    </div>
+  );
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display:"flex", flexDirection:"column", gap:12, width:"100%", maxWidth:480, margin:"0 auto", textAlign:"left" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+        <div>
+          <label style={{ fontFamily:"monospace", fontSize:"0.55rem", color:C.muted, letterSpacing:"0.16em", textTransform:"uppercase", display:"block", marginBottom:5 }}>Name</label>
+          <input required value={name} onChange={e => setName(e.target.value)} placeholder="Your name"
+            style={inputStyle}
+            onFocus={e => e.target.style.borderColor=C.accent}
+            onBlur={e => e.target.style.borderColor=C.dim} />
+        </div>
+        <div>
+          <label style={{ fontFamily:"monospace", fontSize:"0.55rem", color:C.muted, letterSpacing:"0.16em", textTransform:"uppercase", display:"block", marginBottom:5 }}>Email</label>
+          <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com"
+            style={inputStyle}
+            onFocus={e => e.target.style.borderColor=C.accent}
+            onBlur={e => e.target.style.borderColor=C.dim} />
+        </div>
+      </div>
+      <div>
+        <label style={{ fontFamily:"monospace", fontSize:"0.55rem", color:C.muted, letterSpacing:"0.16em", textTransform:"uppercase", display:"block", marginBottom:5 }}>Message</label>
+        <textarea required value={message} onChange={e => setMessage(e.target.value)} placeholder="Tell me about your project or opportunity..." rows={4}
+          style={{ ...inputStyle, resize:"vertical", minHeight:100 }}
+          onFocus={e => e.target.style.borderColor=C.accent}
+          onBlur={e => e.target.style.borderColor=C.dim} />
+      </div>
+      <button type="submit" disabled={status === "sending"}
+        className="ks-btn"
+        style={{ background: status === "sending" ? C.dim : C.accent, color:"#fff", padding:"14px 28px", borderRadius:2, fontSize:"0.76rem", boxShadow: status === "sending" ? "none" : `0 4px 24px rgba(232,52,122,0.38)`, width:"100%", opacity: status === "sending" ? 0.7 : 1, transition:"all 0.2s" }}
+        onMouseEnter={e => { if(status!=="sending") e.currentTarget.style.background=C.accentHover; }}
+        onMouseLeave={e => { if(status!=="sending") e.currentTarget.style.background=C.accent; }}>
+        {status === "sending" ? "[ TRANSMITTING... ]" : "[ SEND MESSAGE ] →"}
+      </button>
+      {status === "error" && (
+        <p style={{ fontFamily:"monospace", fontSize:"0.6rem", color:"#FF5A5A", textAlign:"center", letterSpacing:"0.1em" }}>
+          TRANSMISSION FAILED — please email ken@kensilvaco.com directly.
+        </p>
+      )}
+      <p style={{ fontFamily:"monospace", fontSize:"0.54rem", color:C.muted, textAlign:"center", letterSpacing:"0.1em" }}>
+        or reach out directly at <span style={{ color:C.accent }}>ken@kensilvaco.com</span>
+      </p>
+    </form>
+  );
+}
+
 export default function KenSilvaV4() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -398,6 +485,7 @@ export default function KenSilvaV4() {
   const BOOT_LINES = [
     "> KSCO_OS v4.0 initializing...",
     "> Loading career archive — 15 years of data...",
+    "> Connecting to Canadian gaming network... 🍁",
     "> Partnerships module: ACTIVE",
     "> Strategy engine: ONLINE",
     "> Community protocols: ENGAGED",
@@ -560,7 +648,7 @@ export default function KenSilvaV4() {
           <div style={{ fontFamily:"monospace", fontSize:"0.52rem", color:C.muted, lineHeight:1.9 }}>
             <div>SYS // KSCO_V4.0</div>
             <div>STATUS // <span style={{ color:C.green }}>ONLINE</span></div>
-            <div>LOC // TORONTO_CA</div>
+            <div>LOC // TORONTO 🍁 CANADA</div>
           </div>
         </div>
         <div className="hud-corner-br" style={{ position:"absolute", bottom:28, right:"clamp(16px,4vw,52px)", zIndex:1, pointerEvents:"none" }}>
@@ -570,13 +658,17 @@ export default function KenSilvaV4() {
           </div>
         </div>
 
+        {/* Status badge — top right, desktop only */}
+        <div className="hud-corner-tl" style={{ position:"absolute", top:72, right:"clamp(16px,4vw,52px)", left:"auto", zIndex:2, pointerEvents:"none" }}>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:C.greenDim, border:`1px solid rgba(0,255,136,0.22)`, borderRadius:2, padding:"5px 11px", fontFamily:"monospace" }}>
+            <span style={{ width:6, height:6, borderRadius:"50%", background:C.green, boxShadow:`0 0 7px ${C.green}`, animation:"pulse 2s ease-in-out infinite", flexShrink:0 }} />
+            <span style={{ fontSize:"0.56rem", fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:C.green }}>STATUS: ACCEPTING NEW MISSIONS</span>
+          </div>
+        </div>
+
         <div className="grid-hero" style={{ position:"relative", zIndex:1, maxWidth:1200, margin:"0 auto", width:"100%" }}>
           <div>
-            {/* Badge */}
-            <div className="available-badge" style={{ display:"inline-flex", alignItems:"center", gap:7, background:C.greenDim, border:`1px solid rgba(0,255,136,0.22)`, borderRadius:2, padding:"5px 11px", marginBottom:24, fontFamily:"monospace" }}>
-              <span style={{ width:6, height:6, borderRadius:"50%", background:C.green, boxShadow:`0 0 7px ${C.green}`, animation:"pulse 2s ease-in-out infinite" }} />
-              <span style={{ fontSize:"0.58rem", fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:C.green }}>STATUS: ACCEPTING NEW MISSIONS</span>
-            </div>
+            {/* Badge — now in top-right HUD corner above */}
 
             {/* Zelda quote */}
             <div className="hero-headline" style={{ marginBottom:16 }}>
@@ -657,7 +749,7 @@ export default function KenSilvaV4() {
                 I'm a senior gaming and esports executive currently serving as Game & Esports Manager at Red Bull Canada, and Founder of Ken Silva Co. — a boutique consultancy at the intersection of strategy, community, and authentic storytelling.
               </p>
               <p style={{ fontSize:"0.93rem", lineHeight:1.9, color:C.muted, fontWeight:300, marginBottom:16 }}>
-                My career spans building and selling MXP, co-founding Genesis Gaming, scaling ESL North America from zero to eight figures, directing three of Canada's flagship esports franchises at OverActive Media, and landing the first CDL World Championship ever held outside the United States.
+                My career spans building and selling MXP, serving as a long-term strategic consultant to Genesis Gaming, scaling ESL North America from zero to eight figures, directing three of Canada's flagship esports franchises at OverActive Media, and landing the first CDL World Championship ever held outside the United States.
               </p>
               <p style={{ fontSize:"0.93rem", lineHeight:1.9, color:C.muted, fontWeight:300 }}>
                 I believe communities don't follow brands — they follow people and ideas they believe in. That's always been the foundation. Strategy, authenticity, long-game thinking. The rest follows.
@@ -816,22 +908,7 @@ export default function KenSilvaV4() {
             <p style={{ fontSize:"0.91rem", color:C.muted, lineHeight:1.85, fontWeight:300, maxWidth:400, margin:"0 auto 32px" }}>
               Currently accepting new consulting engagements in gaming, esports, sports partnerships, and digital media strategy.
             </p>
-            <div className="cta-row" style={{ justifyContent:"center" }}>
-              <a href="mailto:ken@kensilvaco.com" style={{ textDecoration:"none" }}>
-                <button className="ks-btn" style={{ background:C.accent, color:"#fff", padding:"14px 28px", borderRadius:2, fontSize:"0.76rem", boxShadow:`0 4px 24px rgba(232,52,122,0.38)`, width:"100%" }}
-                  onMouseEnter={e => e.currentTarget.style.background=C.accentHover}
-                  onMouseLeave={e => e.currentTarget.style.background=C.accent}>
-                  [ EMAIL ] ken@kensilvaco.com
-                </button>
-              </a>
-              <a href="https://linkedin.com/in/kenrsilva" target="_blank" rel="noopener noreferrer" style={{ textDecoration:"none" }}>
-                <button className="ks-btn" style={{ background:"transparent", color:C.text, padding:"14px 28px", borderRadius:2, fontSize:"0.76rem", border:`1px solid ${C.dim}`, width:"100%" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor=C.muted; e.currentTarget.style.color=C.white; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor=C.dim; e.currentTarget.style.color=C.text; }}>
-                  [ LINKEDIN ]
-                </button>
-              </a>
-            </div>
+            <ContactForm />
           </FadeIn>
         </div>
       </section>
