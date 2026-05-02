@@ -644,13 +644,15 @@ export default function KenSilvaV4() {
         <div style={{ position:"absolute", right:"-10%", top:"5%", width:"50%", height:"90%", pointerEvents:"none", zIndex:0, background:`radial-gradient(ellipse at 70% 40%, rgba(232,52,122,0.09) 0%, transparent 65%)` }} />
 
         {/* HUD corners — hidden on mobile */}
-        <div className="hud-corner-tl" style={{ position:"absolute", top:72, left:"clamp(16px,4vw,52px)", zIndex:1, pointerEvents:"none" }}>
+        {/* Bottom-left: SYS info */}
+        <div className="hud-corner-br" style={{ position:"absolute", bottom:28, left:"clamp(16px,4vw,52px)", zIndex:1, pointerEvents:"none" }}>
           <div style={{ fontFamily:"monospace", fontSize:"0.52rem", color:C.muted, lineHeight:1.9 }}>
             <div>SYS // KSCO_V4.0</div>
             <div>STATUS // <span style={{ color:C.green }}>ONLINE</span></div>
             <div>LOC // TORONTO 🍁 CANADA</div>
           </div>
         </div>
+        {/* Bottom-right: build info */}
         <div className="hud-corner-br" style={{ position:"absolute", bottom:28, right:"clamp(16px,4vw,52px)", zIndex:1, pointerEvents:"none" }}>
           <div style={{ fontFamily:"monospace", fontSize:"0.52rem", color:C.muted, textAlign:"right", lineHeight:1.9 }}>
             <div>BUILD // 2026.04</div>
@@ -659,7 +661,7 @@ export default function KenSilvaV4() {
         </div>
 
         {/* Status badge — top right, desktop only */}
-        <div className="hud-corner-tl" style={{ position:"absolute", top:72, right:"clamp(16px,4vw,52px)", left:"auto", zIndex:2, pointerEvents:"none" }}>
+        <div className="hud-corner-br" style={{ position:"absolute", top:72, right:"clamp(16px,4vw,52px)", zIndex:2, pointerEvents:"none" }}>
           <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:C.greenDim, border:`1px solid rgba(0,255,136,0.22)`, borderRadius:2, padding:"5px 11px", fontFamily:"monospace" }}>
             <span style={{ width:6, height:6, borderRadius:"50%", background:C.green, boxShadow:`0 0 7px ${C.green}`, animation:"pulse 2s ease-in-out infinite", flexShrink:0 }} />
             <span style={{ fontSize:"0.56rem", fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:C.green }}>STATUS: ACCEPTING NEW MISSIONS</span>
