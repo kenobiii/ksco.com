@@ -644,14 +644,6 @@ export default function KenSilvaV4() {
         <div style={{ position:"absolute", right:"-10%", top:"5%", width:"50%", height:"90%", pointerEvents:"none", zIndex:0, background:`radial-gradient(ellipse at 70% 40%, rgba(232,52,122,0.09) 0%, transparent 65%)` }} />
 
         {/* HUD corners — hidden on mobile */}
-        {/* Bottom-left: SYS info */}
-        <div className="hud-corner-br" style={{ position:"absolute", bottom:28, left:"clamp(16px,4vw,52px)", zIndex:1, pointerEvents:"none" }}>
-          <div style={{ fontFamily:"monospace", fontSize:"0.52rem", color:C.muted, lineHeight:1.9 }}>
-            <div>SYS // KSCO_V4.0</div>
-            <div>STATUS // <span style={{ color:C.green }}>ONLINE</span></div>
-            <div>LOC // TORONTO 🍁 CANADA</div>
-          </div>
-        </div>
         {/* Bottom-right: build info */}
         <div className="hud-corner-br" style={{ position:"absolute", bottom:28, right:"clamp(16px,4vw,52px)", zIndex:1, pointerEvents:"none" }}>
           <div style={{ fontFamily:"monospace", fontSize:"0.52rem", color:C.muted, textAlign:"right", lineHeight:1.9 }}>
@@ -720,6 +712,14 @@ export default function KenSilvaV4() {
               ))}
               <div style={{ position:"absolute", inset:-1, borderRadius:7, background:`linear-gradient(135deg, ${C.accent}77, transparent 55%, ${C.accent}22)`, zIndex:0 }} />
               <img src={HEADSHOT} alt="Ken Silva" style={{ position:"relative", zIndex:1, width:"100%", aspectRatio:"3/4", objectFit:"cover", objectPosition:"center top", borderRadius:6, filter:"brightness(0.92) contrast(1.06)", display:"block" }} />
+              {/* HUD overlay — top of photo */}
+              <div style={{ position:"absolute", top:10, left:10, right:10, zIndex:4, pointerEvents:"none" }}>
+                <div style={{ background:"rgba(3,8,15,0.75)", backdropFilter:"blur(8px)", borderRadius:3, padding:"7px 10px", border:`1px solid ${C.rule}`, fontFamily:"monospace", lineHeight:1.9 }}>
+                  <div style={{ fontSize:"0.5rem", color:C.muted }}>SYS // KSCO_V4.0</div>
+                  <div style={{ fontSize:"0.5rem", color:C.muted }}>STATUS // <span style={{ color:C.green }}>ONLINE</span></div>
+                  <div style={{ fontSize:"0.5rem", color:C.muted }}>LOC // TORONTO 🍁 CANADA</div>
+                </div>
+              </div>
               <div style={{ position:"absolute", bottom:12, left:12, right:12, zIndex:4, background:"rgba(3,8,15,0.9)", backdropFilter:"blur(10px)", borderRadius:4, padding:"9px 12px", border:`1px solid ${C.rule}`, fontFamily:"monospace" }}>
                 <div style={{ fontSize:"0.54rem", color:C.muted, letterSpacing:"0.16em", marginBottom:2 }}>PLAYER_01</div>
                 <div style={{ fontFamily:"'Cormorant Garamond',serif", fontWeight:600, fontSize:"1rem", color:C.white }}>Ken Silva</div>
